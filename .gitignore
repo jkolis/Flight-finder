@@ -1,0 +1,5 @@
+__pycache__
+*.ipynb
+venv/
+data/old/
+.idea/

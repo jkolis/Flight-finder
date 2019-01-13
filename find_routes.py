@@ -96,7 +96,7 @@ def calc_airline_range(src, dst, airlines_weights_dic):
 
 # zwraca znalezione ścieżki w postaci:
 # {ocena : [lista lotnisk]}
-def show_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic):
+def rate_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic):
     paths = find_shortest_paths(source_city, dest_city)
     rated_routes = {}
 
@@ -118,3 +118,19 @@ def show_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weig
 
         rated_routes[rate] = path
     return rated_routes
+
+
+def get_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic):
+    routes = rate_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic)
+    sorted_paths = []
+    for k, v in routes.items():
+        cities = []
+#         pos = {}
+        for airport in v:
+#             print(airport)
+            city = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'City'].values[0]
+            name = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'Name'].values[0]
+#             print("{}, {}".format(city, name))
+            cities.append("{}, {}".format(city, name))
+        sorted_paths.append(cities)
+    return sorted_paths

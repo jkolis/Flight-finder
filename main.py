@@ -8,4 +8,7 @@ airlines_weights_dic = dict(zip(list(ald.airlines_rated)[3:12], [5, 3, 3, 3, 3, 
 source = "Warsaw"
 dest = "Zaragoza"
 
-print(fr.show_sorted_paths(source, dest, airport_weights_dic, airlines_weights_dic))
+# print(fr.rate_sorted_paths(source, dest, airport_weights_dic, airlines_weights_dic))
+print(fr.get_sorted_paths(source, dest, airport_weights_dic, airlines_weights_dic))
+
+

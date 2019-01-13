@@ -46,7 +46,12 @@ def find_shortest_paths(source_city, dest_city):
             #         print('x', x)
             #         print(shortest_len)
             if len(x) == shortest_len + 1:
-                sp.append(x)
+                exists = True
+                for ap in x:
+                    exists = ((apd.airports_df['ID'] == int(ap)).any() and exists)
+
+                if exists:
+                    sp.append(x)
     return sp
 
 
@@ -123,14 +128,18 @@ def rate_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weig
 def get_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic):
     routes = rate_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weights_dic)
     sorted_paths = []
-    for k, v in routes.items():
+    for k, v in sorted(routes.items(), reverse=True):
         cities = []
-#         pos = {}
+        #         pos = {}
         for airport in v:
-#             print(airport)
-            city = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'City'].values[0]
-            name = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'Name'].values[0]
-#             print("{}, {}".format(city, name))
+            #             print(airport)
+            try:
+                city = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'City'].values[0]
+                name = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'Name'].values[0]
+            except:
+                print(airport)
+            #             print("{}, {}".format(city, name))
             cities.append("{}, {}".format(city, name))
+        cities.append(k)
         sorted_paths.append(cities)
     return sorted_paths

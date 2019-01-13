@@ -377,7 +377,12 @@ class Ui_MainWindow(object):
         dest = self.lineEdit_2.text()
         results = fr.get_sorted_paths(source, dest, airport_weights_dic, airlines_weights_dic)
         result_string = ''
-        result_string = '\n'.join(map(str, results))
+        for result in results:
+            for r in result:
+                result_string += (str(r) + '\n')
+            result_string += ('\n')
+        print(result_string)
+        # result_string = '\n'.join(map(str, results))
         self.textEdit.setText(result_string)
 
     def retranslateUi(self, MainWindow):

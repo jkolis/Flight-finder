@@ -121,7 +121,10 @@ def rate_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weig
         # srednia ocena wszystkich najlepszych linii na trasie
         rate = ap_rate / 50 + al_rate / 45
 
-        rated_routes[rate] = path
+        if rate in rated_routes:
+            rated_routes[rate].append(path)
+        else:
+            rated_routes[rate] = [path]
     return rated_routes
 
 
@@ -130,16 +133,20 @@ def get_sorted_paths(source_city, dest_city, airport_weights_dic, airlines_weigh
     sorted_paths = []
     for k, v in sorted(routes.items(), reverse=True):
         cities = []
-        #         pos = {}
-        for airport in v:
-            #             print(airport)
-            try:
-                city = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'City'].values[0]
-                name = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'Name'].values[0]
-            except:
-                print(airport)
-            #             print("{}, {}".format(city, name))
-            cities.append("{}, {}".format(city, name))
-        cities.append(k)
-        sorted_paths.append(cities)
+#         pos = {}
+        for airports in v:
+            cities = []
+            for airport in airports:
+                try:
+                    city = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'City'].values[0]
+                    name = apd.airports_df.loc[apd.airports_df['ID'] == int(airport), 'Name'].values[0]
+                except:
+                    print(airport)
+    #             print("{}, {}".format(city, name))
+                result = "{}, {}".format(city, name)
+                cities.append(result)
+            cities.append(k)
+        # print(cities)
+            sorted_paths.append(cities)
+#     return [item for sublist in sorted_paths for item in sublist]
     return sorted_paths
